@@ -17,6 +17,7 @@ async function run() {
     try {
         await client.connect();
         const billCollection = client.db("Power-hack").collection("bills");
+        const registerCollection = client.db("Power-hack").collection("register");
 
         app.get('/billing-list', async (req, res) => {
             const result = await billCollection.find().toArray()
@@ -50,6 +51,19 @@ async function run() {
             const result = await billCollection.deleteOne(filter)
             res.send(result)
         })
+
+        app.post('/registration', async (req, res) => {
+            const data = req.body
+            const result = await registerCollection.insertOne(data)
+            res.send(result)
+        })
+
+
+        app.get('/registration', async (req, res) => {
+            const result = await registerCollection.find().toArray()
+            res.send(result)
+        })
+
 
     } finally {
         // await client.close();
