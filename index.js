@@ -30,7 +30,20 @@ async function run() {
             res.send(result)
         })
 
-        
+
+        app.put('/update-billing/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const data = req.body
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: data,
+            };
+            const result = await billCollection.updateOne(filter, updateDoc, options);
+            res.send(result)
+        })
+
+
         app.delete('/delete-billing/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) }
